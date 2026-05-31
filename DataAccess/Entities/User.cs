@@ -29,7 +29,7 @@ namespace DataAccess.Entities
         [StringLength(50)]
         public string? Culture { get; set; }
 
-        [StringLength(100)]
+        [StringLength(500)]
         public string PasswordHash { get; set; }
     }
 }
