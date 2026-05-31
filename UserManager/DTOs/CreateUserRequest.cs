@@ -1,6 +1,6 @@
-namespace UserManagerAPI.DTOs
+﻿namespace UserManagerAPI.DTOs
 {
-    public class UserDto
+    public class CreateUserRequest
     {
         public string UserName { get; set; }
 
@@ -14,5 +14,6 @@ namespace UserManagerAPI.DTOs
 
         public string Culture { get; set; }
 
+        public string Password { get; set; }
     }
 }

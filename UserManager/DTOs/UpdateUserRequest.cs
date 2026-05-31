@@ -1,9 +1,7 @@
-namespace UserManagerAPI.DTOs
+﻿namespace UserManagerAPI.DTOs
 {
-    public class UserDto
+    public class UpdateUserRequest
     {
-        public string UserName { get; set; }
-
         public string FullName { get; set; }
 
         public string Email { get; set; }
@@ -14,5 +12,6 @@ namespace UserManagerAPI.DTOs
 
         public string Culture { get; set; }
 
+        public string Password { get; set; }
     }
 }

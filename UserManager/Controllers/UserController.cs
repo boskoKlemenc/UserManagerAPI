@@ -28,7 +28,7 @@ namespace UserManager.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<UserDto>> CreateUser(UserDto request)
+        public async Task<ActionResult<UserDto>> CreateUser(CreateUserRequest request)
         {
             var createdUser = await _userService.CreateUserAsync(request);
 
@@ -36,7 +36,7 @@ namespace UserManager.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<UserDto>> UpdateUser(Guid id, UserDto request)
+        public async Task<ActionResult<UserDto>> UpdateUser(Guid id, UpdateUserRequest request)
         {
             var user = await _userService.UpdateUserAsync(id, request);
 

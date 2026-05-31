@@ -15,8 +15,13 @@ namespace UserManagerAPI.Services
             _db = db;
         }
 
-        public async Task<UserDto> CreateUserAsync(UserDto request)
+        public async Task<UserDto> CreateUserAsync(CreateUserRequest request)
         {
+            var existingUser = await _db.Users.FirstOrDefaultAsync(x => x.UserName == request.UserName);
+
+            if (existingUser != null)
+                throw new Exception("Username already exists");
+
             var user = new User
             {
                 UserName = request.UserName,
@@ -36,8 +41,7 @@ namespace UserManagerAPI.Services
 
         public async Task<UserDto?> GetUserAsync(Guid id)
         {
-            var user = await _db.Users
-                .FirstOrDefaultAsync(x => x.Id == id);
+            var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == id);
 
             if (user == null)
                 return null;
@@ -45,15 +49,13 @@ namespace UserManagerAPI.Services
             return MapToDto(user);
         }
 
-        public async Task<UserDto?> UpdateUserAsync(Guid id, UserDto request)
+        public async Task<UserDto?> UpdateUserAsync(Guid id, UpdateUserRequest request)
         {
-            var user = await _db.Users
-                .FirstOrDefaultAsync(x => x.Id == id);
+            var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == id);
 
             if (user == null)
                 return null;
 
-            user.UserName = request.UserName;
             user.FullName = request.FullName;
             user.Email = request.Email;
             user.MobileNumber = request.MobileNumber;
@@ -67,8 +69,7 @@ namespace UserManagerAPI.Services
 
         public async Task<bool> DeleteUserAsync(Guid id)
         {
-            var user = await _db.Users
-                .FirstOrDefaultAsync(x => x.Id == id);
+            var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == id);
 
             if (user == null)
                 return false;
