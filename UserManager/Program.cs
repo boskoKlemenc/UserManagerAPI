@@ -1,7 +1,8 @@
 using DataAccess.Context;
-using System;
-using UserManagerAPI.Services;
 using Microsoft.EntityFrameworkCore;
+using System;
+using UserManagerAPI.Middleware;
+using UserManagerAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,7 +35,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+//Add API key authorization
+//app.UseMiddleware<ApiKeyMiddleware>();
 app.UseAuthorization();
+
+//Add logging - one log file per day for requests
+app.UseMiddleware<RequestLoggingMiddleware>();
 
 app.MapControllers();
 
