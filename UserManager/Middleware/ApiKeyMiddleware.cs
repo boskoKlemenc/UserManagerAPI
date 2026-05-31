@@ -1,4 +1,6 @@
-﻿namespace UserManagerAPI.Middleware
+﻿using UserManagerAPI.Services;
+
+namespace UserManagerAPI.Middleware
 {
     public class ApiKeyMiddleware
     {
@@ -10,7 +12,7 @@
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext context, IConfiguration configuration)
+        public async Task InvokeAsync(HttpContext context, IConfiguration configuration, IApiClientService apiClientService)
         {
             if (!context.Request.Headers.TryGetValue(ApiKeyHeaderName, out var extractedApiKey))
             {
@@ -19,14 +21,14 @@
                 return;
             }
 
-            var apiKey = configuration.GetValue<string>("ApiKey");
-
-            //if (!apiKey.Equals(extractedApiKey))
-            //{
-            //    context.Response.StatusCode = 403;
-            //    await context.Response.WriteAsync("Unauthorized client.");
-            //    return;
-            //}
+            //check if client with this api key exists and is active
+            var apiClient = await apiClientService.GetByApiKeyAsync(extractedApiKey);
+            if (!(apiClient != null && apiClient.IsActive))
+            {
+                context.Response.StatusCode = 403;
+                await context.Response.WriteAsync("Unauthorized client.");
+                return;
+            }
 
             await _next(context);
         }
