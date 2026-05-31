@@ -21,13 +21,13 @@ namespace DataAccess.Entities
         public string Email { get; set; }
 
         [StringLength(25)]
-        public string MobileNumber { get; set; }
+        public string? MobileNumber { get; set; }
 
         [StringLength(50)]
-        public string Language { get; set; }
+        public string? Language { get; set; }
 
         [StringLength(50)]
-        public string Culture { get; set; }
+        public string? Culture { get; set; }
 
         [StringLength(25)]
         public string PasswordHash { get; set; }
