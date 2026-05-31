@@ -63,12 +63,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//Add API key authorization
-app.UseMiddleware<ApiKeyMiddleware>();
-app.UseAuthorization();
+//Add exception middleware
+app.UseMiddleware<ExceptionMiddleware>();
 
 //Add logging - one log file per day for requests
 app.UseMiddleware<RequestLoggingMiddleware>();
+
+//Add API key authorization
+app.UseMiddleware<ApiKeyMiddleware>();
+app.UseAuthorization();
 
 app.MapControllers();
 
