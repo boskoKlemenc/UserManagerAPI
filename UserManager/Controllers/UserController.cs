@@ -54,7 +54,7 @@ namespace UserManager.Controllers
             if (!deleted)
                 return NotFound();
 
-            return NoContent();
+            return Ok();
         }
 
         [HttpPost("validate-password")]
