@@ -16,5 +16,25 @@ namespace DataAccess.Context
 
         public DbSet<ApiClient> ApiClients { get; set; }
         public DbSet<User> Users { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<ApiClient>().HasData(
+                new ApiClient
+                {
+                    Id = 1,
+                    ClientName = "TestClient1",
+                    ApiKey = "test-key-1"
+                },
+                new ApiClient
+                {
+                    Id = 2,
+                    ClientName = "TestClient2",
+                    ApiKey = "test-key-2"
+                }
+            );
+        }
     }
 }
