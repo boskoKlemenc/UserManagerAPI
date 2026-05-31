@@ -25,7 +25,7 @@ namespace UserManagerAPI.Services
                 MobileNumber = request.MobileNumber,
                 Language = request.Language,
                 Culture = request.Culture,
-                //PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password)
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password)
             };
 
             await _db.Users.AddAsync(user);
@@ -81,14 +81,12 @@ namespace UserManagerAPI.Services
 
         public async Task<bool> ValidatePasswordAsync(string userName, string password)
         {
-            var user = await _db.Users
-                .FirstOrDefaultAsync(x => x.UserName == userName);
+            var user = await _db.Users.FirstOrDefaultAsync(x => x.UserName == userName);
 
             if (user == null)
                 return false;
 
-            //return BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
-            return true;
+            return BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
         }
 
         #region helpers
