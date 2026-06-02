@@ -98,9 +98,9 @@ namespace UserManagerAPI.Services
                 UserName = user.UserName,
                 FullName = user.FullName,
                 Email = user.Email,
-                MobileNumber = user.MobileNumber,
-                Language = user.Language,
-                Culture = user.Culture
+                MobileNumber = user.MobileNumber ?? "",
+                Language = user.Language ?? "",
+                Culture = user.Culture ?? ""
             };
         }
         #endregion 
