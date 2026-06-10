@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using DataAccess.Context;
+using System.Text;
+using UserManagerAPI.Services;
 
 namespace UserManagerAPI.Middleware
 {
@@ -14,7 +16,7 @@ namespace UserManagerAPI.Middleware
             _env = env;
         }
 
-        public async Task Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context, IApiClientService apiClientService)
         {
             var start = DateTime.UtcNow;
 
@@ -28,6 +30,9 @@ namespace UserManagerAPI.Middleware
 
             try
             {
+                var apiClient = await apiClientService.GetByApiKeyAsync(apiKey);
+                clientName = apiClient?.ClientName;
+
                 await _next(context);
 
                 var log = BuildLog("Info", start, ip ?? "", clientName, host, method, path, "", "Request completed");
