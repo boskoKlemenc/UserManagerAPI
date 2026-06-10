@@ -6,6 +6,7 @@ namespace UserManagerAPI.Middleware
     {
         private readonly RequestDelegate _next;
         private readonly IWebHostEnvironment _env;
+        private static readonly object lockObj = new object();
 
         public RequestLoggingMiddleware(RequestDelegate next, IWebHostEnvironment env)
         {
@@ -53,8 +54,9 @@ namespace UserManagerAPI.Middleware
             Directory.CreateDirectory(logDir);
 
             var file = Path.Combine(logDir, $"log-{DateTime.UtcNow:yyyy-MM-dd}.txt");
-
-            File.AppendAllText(file, log + Environment.NewLine, Encoding.UTF8);
+            lock (lockObj) { 
+                File.AppendAllText(file, log + Environment.NewLine, Encoding.UTF8);
+            }
         }
     }
 }

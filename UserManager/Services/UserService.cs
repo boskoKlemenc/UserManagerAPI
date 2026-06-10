@@ -15,12 +15,12 @@ namespace UserManagerAPI.Services
             _db = db;
         }
 
-        public async Task<UserDto> CreateUserAsync(CreateUserRequest request)
+        public async Task<(Guid? id, string? error)> CreateUserAsync(CreateUserRequest request)
         {
             var existingUser = await _db.Users.FirstOrDefaultAsync(x => x.UserName == request.UserName);
 
             if (existingUser != null)
-                throw new Exception("Username already exists");
+                return (null, "Username already exists");
 
             var user = new User
             {
@@ -36,7 +36,7 @@ namespace UserManagerAPI.Services
             await _db.Users.AddAsync(user);
             await _db.SaveChangesAsync();
 
-            return MapToDto(user);
+            return (user.Id, null);
         }
 
         public async Task<UserDto?> GetUserAsync(Guid id)

@@ -28,11 +28,14 @@ namespace UserManager.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<UserDto>> CreateUser(CreateUserRequest request)
+        public async Task<ActionResult> CreateUser(CreateUserRequest request)
         {
-            var createdUser = await _userService.CreateUserAsync(request);
+            var result = await _userService.CreateUserAsync(request);
 
-            return Ok(createdUser);
+            if (result.error != null)
+                return Conflict(new { message = result.error });
+
+            return CreatedAtAction(nameof(GetUser), new { id = result.id }, new { id = result.id });
         }
 
         [HttpPut("{id}")]
@@ -58,11 +61,11 @@ namespace UserManager.Controllers
         }
 
         [HttpPost("validate-password")]
-        public async Task<ActionResult<bool>> ValidatePassword(ValidatePasswordRequest request)
+        public async Task<ActionResult> ValidatePassword([FromBody] ValidatePasswordRequest request)
         {
             var isValid = await _userService.ValidatePasswordAsync(request.Username, request.Password);
 
-            return Ok(isValid);
+            return Ok(new { isValid });
         }
     }
 }
