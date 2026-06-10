@@ -28,6 +28,18 @@ namespace UserManagerAPI.Middleware
             var clientName = context.Request.Headers["X-Client-Name"].ToString();
             var apiKey = context.Request.Headers["X-AUTH-KEY"].ToString();
 
+            //read body of a request
+            context.Request.EnableBuffering();
+
+            using var reader = new StreamReader(
+                context.Request.Body,
+                leaveOpen: true);
+
+            var body = await reader.ReadToEndAsync();
+            context.Request.Body.Position = 0;
+
+            var parameters =!string.IsNullOrWhiteSpace(body) ? body : context.Request.QueryString.ToString();
+
             try
             {
                 var apiClient = await apiClientService.GetByApiKeyAsync(apiKey);
@@ -35,13 +47,13 @@ namespace UserManagerAPI.Middleware
 
                 await _next(context);
 
-                var log = BuildLog("Info", start, ip ?? "", clientName, host, method, path, "", "Request completed");
+                var log = BuildLog("Info", start, ip ?? "", clientName, host, method, path, parameters, "Request completed");
 
                 WriteLog(log);
             }
             catch (Exception ex)
             {
-                var log = BuildLog("Error", start, ip ?? "", clientName, host, method, path, "", ex.Message);
+                var log = BuildLog("Error", start, ip ?? "", clientName, host, method, path, parameters, ex.Message);
 
                 WriteLog(log);
                 throw;
