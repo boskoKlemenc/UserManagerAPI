@@ -6,24 +6,24 @@ namespace UserManagerAPI.DTOs
     {
         [StringLength(100)]
         [Required]
-        public string FullName { get; set; }
+        public string FullName { get; set; } = string.Empty;
 
         [EmailAddress]
         [Required]
-        public string Email { get; set; }
+        public string Email { get; set; } = string.Empty;
 
         [StringLength(25)]
-        public string MobileNumber { get; set; }
+        public string MobileNumber { get; set; } = string.Empty;
 
         [StringLength(50)]
-        public string Language { get; set; }
+        public string Language { get; set; } = string.Empty;
 
         [StringLength(50)]
-        public string Culture { get; set; }
+        public string Culture { get; set; } = string.Empty;
 
         [MinLength(8)]
         [MaxLength(25)]
         [Required]
-        public string Password { get; set; }
+        public string Password { get; set; } = string.Empty;
     }
 }

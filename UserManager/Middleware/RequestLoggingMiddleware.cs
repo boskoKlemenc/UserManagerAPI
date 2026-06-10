@@ -30,13 +30,13 @@ namespace UserManagerAPI.Middleware
             {
                 await _next(context);
 
-                var log = BuildLog("Info", start, ip, clientName, host, method, path, "", "Request completed");
+                var log = BuildLog("Info", start, ip ?? "", clientName, host, method, path, "", "Request completed");
 
                 WriteLog(log);
             }
             catch (Exception ex)
             {
-                var log = BuildLog("Error", start, ip, clientName, host, method, path, "", ex.Message);
+                var log = BuildLog("Error", start, ip ?? "", clientName, host, method, path, "", ex.Message);
 
                 WriteLog(log);
                 throw;

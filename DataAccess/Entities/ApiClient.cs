@@ -12,10 +12,10 @@ namespace DataAccess.Entities
         public int Id { get; set; }
 
         [StringLength(50)]
-        public string ClientName { get; set; }
+        public string ClientName { get; set; } = string.Empty;
 
         [StringLength(50)]
-        public string ApiKey { get; set; }
+        public string ApiKey { get; set; } = string.Empty;
 
         public bool IsActive { get; set; } = true;
 

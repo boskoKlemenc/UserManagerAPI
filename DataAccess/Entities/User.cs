@@ -12,13 +12,13 @@ namespace DataAccess.Entities
         public Guid Id { get; private set; } = Guid.NewGuid();
 
         [StringLength(25)]
-        public string UserName { get; set; }
+        public string UserName { get; set; } = string.Empty;
 
         [StringLength(100)]
-        public string FullName { get; set; }
+        public string FullName { get; set; } = string.Empty;
 
         [StringLength(50)]
-        public string Email { get; set; }
+        public string Email { get; set; } = string.Empty;
 
         [StringLength(25)]
         public string? MobileNumber { get; set; }
@@ -30,6 +30,6 @@ namespace DataAccess.Entities
         public string? Culture { get; set; }
 
         [StringLength(500)]
-        public string PasswordHash { get; set; }
+        public string PasswordHash { get; set; } = string.Empty;
     }
 }

@@ -1,4 +1,5 @@
-﻿using UserManagerAPI.Services;
+﻿using Microsoft.Extensions.Primitives;
+using UserManagerAPI.Services;
 
 namespace UserManagerAPI.Middleware
 {
@@ -14,6 +15,7 @@ namespace UserManagerAPI.Middleware
 
         public async Task InvokeAsync(HttpContext context, IConfiguration configuration, IApiClientService apiClientService)
         {
+
             if (!context.Request.Headers.TryGetValue(ApiKeyHeaderName, out var extractedApiKey))
             {
                 context.Response.StatusCode = 401; //return unauthorized if no key is present
@@ -21,8 +23,10 @@ namespace UserManagerAPI.Middleware
                 return;
             }
 
+            var apiKey = extractedApiKey.ToString();
+
             //check if client with this api key exists and is active
-            var apiClient = await apiClientService.GetByApiKeyAsync(extractedApiKey);
+            var apiClient = await apiClientService.GetByApiKeyAsync(apiKey);
             if (!(apiClient != null && apiClient.IsActive))
             {
                 context.Response.StatusCode = 403;
