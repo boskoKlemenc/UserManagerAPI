@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using UserManagerAPI.DTOs;
 using UserManagerAPI.Services;
 
-namespace UserManager.Controllers
+namespace UserManagerAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
